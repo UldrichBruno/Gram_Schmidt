@@ -70,28 +70,24 @@ int vectorComponent(struct vectors z, int which) {
     return component;
 }
 
-struct vectors orthoVectors(int orthoVectorComponent, int DIM, int which){
-    struct vectors v;
-    v.size = DIM;
-    v.array[which] = orthoVectorComponent;
 
-}
-
-double dotProduct(int vectorComponent, struct matrix Matrix, struct vectors orthoVectors, int where){
+double dotProduct(struct vectors Vector, struct matrix Matrix, int whichOneLeft, int whichOneRight){
     double product = 0;
     for (int i = 0; i < Matrix.size; i++){
-        double b = 0;
+        double partialSum = 0;
         for (int j = 0; j < Matrix.size; j++) {
-            double a = Matrix.array[i][j] * orthoVectors.array[where];
-            where++;
-            b = a + b;
+            double matrixPointVectorRight = Matrix.array[i][j] * Vector.array[whichOneRight * Matrix.size + j];
+            partialSum = matrixPointVectorRight + partialSum;
         }
-        double c = vectorComponent * b;
+        double c = Vector.array[whichOneLeft * Matrix.size +i] * partialSum;
         product = product + c;
     }
     return product;
 }
 
-double Gram_schmidt(double dotProduct, int vectorComponent, struct vectors orthoVectors){
-
+double Gram_Schmidt(struct vectors Vector, struct matrix Matrix, double dotProduct, int numOfVectors, int DIM, int whichOneGet, double sum){
+    for (int j = 0; j < DIM; j++) {
+        Vector.array[numOfVectors * DIM + (whichOneGet * DIM - DIM + j)] = Vector.array[whichOneGet * DIM - DIM + j] - Vector.array[numOfVectors * DIM + (whichOneGet * DIM - 2 * DIM + j)] * sum(dotProduct, Vector);
+        return Vector.array[numOfVectors * DIM + (whichOneGet * DIM - DIM + j)];
+    }
 }
