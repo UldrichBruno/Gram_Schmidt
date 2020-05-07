@@ -29,4 +29,23 @@ int main() {
         cout << endl;
         counter = counter + inputDIM;
     }
+    cout << "" << endl;
+    cout << "Your matrix: " << endl;
+    printMatrix(readMatrix(inputDIM, path1));
+
+    for (int i = 0; i = inputDIM * numOfVectors; i++) {
+        Gram_Schmidt(readVector(inputDIM * numOfVectors, path2), readMatrix(inputDIM, path1), numOfVectors, i);
+    }
+
+   /* cout << "All vectors:";
+    int counter2 = 0;
+    for (int i = 0; i < inputDIM * numOfVectors * 2; i++) {
+        cout << "Vector" << i + 1 << ": ";
+        for (int j = counter2; j < inputDIM + counter2; j++) {
+            cout << vectorComponent(readVector(inputDIM * numOfVectors * 2, path2), j);
+        }
+        cout << endl;
+        counter2 = counter2 + inputDIM;
+    }
+    cout << "" << endl;*/
 }
