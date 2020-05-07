@@ -33,10 +33,12 @@ int main() {
     cout << "Your matrix: " << endl;
     printMatrix(readMatrix(inputDIM, path1));
 
-    for (int i = 0; i = inputDIM * numOfVectors; i++) {
-        Gram_Schmidt(readVector(inputDIM * numOfVectors, path2), readMatrix(inputDIM, path1), numOfVectors, i);
+    for (int i = 2; i < inputDIM * numOfVectors; i++) {
+        struct vectors Final = Gram_Schmidt(initializeOrthoVector(readVector(inputDIM * numOfVectors,path2), numOfVectors), readMatrix(inputDIM, path1), numOfVectors, i);
     }
-
+    for (int i = 0; i < numOfVectors * inputDIM; i++){
+        printVector(Final.array[i]);
+    }
    /* cout << "All vectors:";
     int counter2 = 0;
     for (int i = 0; i < inputDIM * numOfVectors * 2; i++) {

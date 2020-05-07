@@ -76,10 +76,10 @@ double dotProduct(struct vectors Vector, struct matrix Matrix, int whichOneLeft,
     for (int i = 0; i < Matrix.size; i++){
         double partialSum = 0;
         for (int j = 0; j < Matrix.size; j++) {
-            double matrixPointVectorRight = Matrix.array[i][j] * Vector.array[whichOneRight * Matrix.size + j];
+            double matrixPointVectorRight = Matrix.array[i][j] * (whichOneRight + j);
             partialSum = matrixPointVectorRight + partialSum;
         }
-        double c = Vector.array[whichOneLeft * Matrix.size +i] * partialSum;
+        double c = (whichOneLeft + i) * partialSum;
         product = product + c;
     }
     return product;
@@ -89,25 +89,30 @@ double sum(struct vectors Vector, struct matrix Matrix, int whichOneGet, int num
     double dotProd = 0;
     double norm = 0;
     double partial = 0;
-    int n = 0;
     for (int i = 0; i < whichOneGet -1; i++){
         int c = Vector.array[whichOneGet * Vector.size - Vector.size + i];
-        int d = Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - Vector.size + i];
-       struct vectors v =  Vector;
-        struct matrix  m = Matrix  ;
+        int d = Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - 2 * Vector.size + i];
        dotProd = dotProduct(Vector, Matrix, c, d);
        norm = dotProduct(Vector, Matrix, Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - Vector.size + i], Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - Vector.size + i]);
-       double e = (dotProd * (Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - Vector.size + i]))/(norm * norm);
+       double e = (dotProd * (Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - 2 * Vector.size + i]))/(norm * norm);
        partial = partial + e;
     }
     return partial;
 }
 
-void Gram_Schmidt(struct vectors Vector, struct matrix Matrix, int numOfVectors, int whichOneGet){
+struct vectors Gram_Schmidt(struct vectors Vector, struct matrix Matrix, int numOfVectors, int whichOneGet){
     for (int j = 0; j < Vector.size; j++) {
         Vector.array[numOfVectors * Vector.size + (whichOneGet * Vector.size - Vector.size + j)] = Vector.array[whichOneGet * Vector.size - Vector.size + j] - sum(Vector, Matrix, whichOneGet, numOfVectors);
         cout << Vector.array[numOfVectors * Vector.size + (whichOneGet * Vector.size - Vector.size + j)];
     }
+    return Vector;
+}
+
+struct vectors initializeOrthoVector(struct vectors Vector, int numOfVectors){
+    for (int i = 0; i < numOfVectors; i++) {
+        Vector.array[numOfVectors * Vector.size/numOfVectors + i] = Vector.array[i];
+    }
+    return Vector;
 }
 
 

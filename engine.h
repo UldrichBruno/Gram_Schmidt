@@ -15,8 +15,9 @@ struct matrix{
 struct matrix readMatrix(int inputDIM, string path);       // Load matrix from a file.
 struct vectors readVector(int inputDIM, string path);       // Load vector from a file.
 void printMatrix(struct matrix a);
-void printVector(struct vectorss z);
+void printVector(struct vectors z);
 double dotProduct(struct vectors Vector, struct matrix Matrix, int whichOneLeft, int whichOneRight);
-void Gram_Schmidt(struct vectors Vector, struct matrix Matrix, int numOfVectors, int whichOneGet);
+struct vectors Gram_Schmidt(struct vectors Vector, struct matrix Matrix, int numOfVectors, int whichOneGet);
 int vectorComponent(struct vectors z, int which);
 double sum(struct vectors Vector, struct matrix Matrix, int whichOneGet, int numOfVectors);
+struct vectors initializeOrthoVector(struct vectors Vector, int numOfVectors);
