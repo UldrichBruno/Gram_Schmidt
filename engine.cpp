@@ -71,7 +71,7 @@ int vectorComponent(struct vectors Vector, int which) {
 }
 
 
-double dotProduct(struct vectors Vector, struct matrix Matrix, int whichOneLeft, int whichOneRight){
+double dotProduct(struct vectors Vector, struct matrix Matrix, double whichOneLeft, double whichOneRight){
     double product = 0;
     for (int i = 0; i < Matrix.size; i++){
         double partialSum = 0;
@@ -90,29 +90,34 @@ double sum(struct vectors Vector, struct matrix Matrix, int whichOneGet, int num
     double norm = 0;
     double partial = 0;
     for (int i = 0; i < whichOneGet -1; i++){
-        int c = Vector.array[whichOneGet * Vector.size - Vector.size + i];
-        int d = Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - 2 * Vector.size + i];
-       dotProd = dotProduct(Vector, Matrix, c, d);
-       norm = dotProduct(Vector, Matrix, Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - Vector.size + i], Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - Vector.size + i]);
-       double e = (dotProd * (Vector.array[Vector.size * numOfVectors + whichOneGet * Vector.size - 2 * Vector.size + i]))/(norm * norm);
+        double left = Vector.array[whichOneGet - Vector.size + i];
+        double right = Vector.array[whichOneGet - Vector.size / numOfVectors + i];
+       dotProd = dotProduct(Vector, Matrix, left, right);
+       norm = dotProduct(Vector, Matrix, right, right);
+       double e = (dotProd * right)/(norm * norm);
        partial = partial + e;
     }
     return partial;
 }
 
 struct vectors Gram_Schmidt(struct vectors Vector, struct matrix Matrix, int numOfVectors, int whichOneGet){
-    for (int j = 0; j < Vector.size; j++) {
-        Vector.array[numOfVectors * Vector.size + (whichOneGet * Vector.size - Vector.size + j)] = Vector.array[whichOneGet * Vector.size - Vector.size + j] - sum(Vector, Matrix, whichOneGet, numOfVectors);
-        cout << Vector.array[numOfVectors * Vector.size + (whichOneGet * Vector.size - Vector.size + j)];
+    for (int i = 0; i < Vector.size; i++) {
+        Vector.array[Vector.size + (whichOneGet * Vector.size / numOfVectors - Vector.size / numOfVectors + i)] = Vector.array[whichOneGet * Vector.size / numOfVectors - Vector.size + i] - sum(Vector, Matrix, Vector.size + (whichOneGet * Vector.size / numOfVectors - Vector.size / numOfVectors + i), numOfVectors);
+        //cout << Vector.array[Vector.size + (whichOneGet * Vector.size / numOfVectors- Vector.size / numOfVectors + i)];
     }
     return Vector;
 }
 
-struct vectors initializeOrthoVector(struct vectors Vector, int numOfVectors){
-    for (int i = 0; i < numOfVectors; i++) {
-        Vector.array[numOfVectors * Vector.size/numOfVectors + i] = Vector.array[i];
+struct vectors initializeOrthoVector(struct vectors Vectors, int numOfVectors){
+    for (int i = 0; i < Vectors.size / numOfVectors; i++) {
+        Vectors.array[Vectors.size + i] = Vectors.array[i];
     }
-    return Vector;
+    return Vectors;
 }
 
-
+struct vectors Result (struct vectors Vectors, struct matrix Matrix, int numOfVectors, int DIM){
+    for (int i = 2; i < DIM * numOfVectors; i++) {
+        Gram_Schmidt(initializeOrthoVector(Vectors, numOfVectors), Matrix, numOfVectors, i);
+    }
+    return Vectors;
+}

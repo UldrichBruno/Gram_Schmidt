@@ -35,13 +35,11 @@ int main() {
 
     struct matrix givenMatrix = readMatrix(inputDIM, path1);
     printMatrix(givenMatrix);
-
-    for (int i = 2; i < inputDIM * numOfVectors; i++) {
-        struct vectors Final = Gram_Schmidt(initializeOrthoVector(givenVectors, numOfVectors), givenMatrix, numOfVectors, i);
-    }
-    for (int i = 0; i < numOfVectors * inputDIM; i++){
-        printVector(Final.array[i]);
-    }
+    struct vectors result = Result (givenVectors, givenMatrix, numOfVectors, inputDIM);
+    printVector(result);
+  //  for (int i = 0; i < inputDIM * numOfVectors; i++){
+  //      printVector(Result.array[i]);
+//}
    /* cout << "All vectors:";
     int counter2 = 0;
     for (int i = 0; i < inputDIM * numOfVectors * 2; i++) {
