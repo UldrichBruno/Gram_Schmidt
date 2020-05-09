@@ -2,9 +2,8 @@
 #include "engine.h"
 
 int main() {
-
-    int inputDIM;
     int numOfVectors;
+    int inputDIM;
     string path1 = "C:/Users/Uzivatel/CLionProjects3/Hledani_inverzni_matice/matrix.txt";        // Example: C:/Users/Uzivatel/CLionProjects3/Hledani_inverzni_matice/matrix.txt
     string path2 = "C:/Users/Uzivatel/CLionProjects2/inverze_adj/vector.txt";        // Example: C:/Users/Uzivatel/CLionProjects2/inverze_adj/vector.txt
 
@@ -17,24 +16,28 @@ int main() {
     //  cout << "Input path to read vectors." << endl;
     //  cin >> path2;
     cout << "Input number of your vectors vectors." << endl;
-    cin >> numOfVectors;;
+    cin >> numOfVectors;
+
+    struct vectors givenVectors = readVector(inputDIM * numOfVectors,path2);
 
     cout << "Your vectors:" << endl;
     int counter = 0;
     for (int i = 0; i < inputDIM; i++) {
         cout << "Vector" << i + 1 << ": ";
         for (int j = counter; j < inputDIM + counter; j++) {
-            cout << vectorComponent(readVector(inputDIM * numOfVectors, path2), j);
+            cout << vectorComponent(givenVectors, j);
         }
         cout << endl;
         counter = counter + inputDIM;
     }
     cout << "" << endl;
     cout << "Your matrix: " << endl;
-    printMatrix(readMatrix(inputDIM, path1));
+
+    struct matrix givenMatrix = readMatrix(inputDIM, path1);
+    printMatrix(givenMatrix);
 
     for (int i = 2; i < inputDIM * numOfVectors; i++) {
-        struct vectors Final = Gram_Schmidt(initializeOrthoVector(readVector(inputDIM * numOfVectors,path2), numOfVectors), readMatrix(inputDIM, path1), numOfVectors, i);
+        struct vectors Final = Gram_Schmidt(initializeOrthoVector(givenVectors, numOfVectors), givenMatrix, numOfVectors, i);
     }
     for (int i = 0; i < numOfVectors * inputDIM; i++){
         printVector(Final.array[i]);
